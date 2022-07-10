@@ -31,19 +31,27 @@ impl Controller {
     pub fn handle_arrow_keys(&mut self) -> bool {
         let mut some_key_was_pressed = false;
         let mut direction: Direction = Direction::LEFT; // Does not matter which direction is set here, but some must be set, otherwise compiler will complain
-        if is_key_pressed(KeyCode::Up) && self.snake.direction != Direction::UP {
+        if is_key_pressed(KeyCode::Up) 
+            && self.snake.direction != Direction::UP 
+            && self.snake.direction != Direction:: DOWN {
             some_key_was_pressed = true;
             direction = Direction::UP;        
         }
-        if is_key_pressed(KeyCode::Down) && self.snake.direction != Direction::DOWN {
+        if is_key_pressed(KeyCode::Down) 
+            && self.snake.direction != Direction::DOWN 
+            && self.snake.direction != Direction::UP {
             some_key_was_pressed = true;
             direction = Direction::DOWN;
         }
-        if is_key_pressed(KeyCode::Left) && self.snake.direction != Direction:: LEFT {
+        if is_key_pressed(KeyCode::Left) 
+            && self.snake.direction != Direction::LEFT 
+            && self.snake.direction != Direction::RIGHT {
             some_key_was_pressed = true;
             direction = Direction::LEFT;
         }
-        if is_key_pressed(KeyCode::Right) && self.snake.direction != Direction:: RIGHT {
+        if is_key_pressed(KeyCode::Right) 
+            && self.snake.direction != Direction::RIGHT
+            && self.snake.direction != Direction::LEFT {
             some_key_was_pressed = true;
             direction = Direction::RIGHT;
         }
