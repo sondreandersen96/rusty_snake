@@ -8,11 +8,10 @@ This is my first real project using the Rust language, and has so far been a fun
 
 # TODO
 
-- Detect wall collisions
-- Detect biting tail 
-- Prevent speeding (tapping arrow in current direction)
-- Tune food spawining
 - Prevent turning in the exact oposite direction 
+- Tune food spawining
+- Make snake speed dynamic (increase with points)
+
 
 # Nice to know 
 

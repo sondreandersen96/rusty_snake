@@ -13,6 +13,7 @@ pub struct Controller {
     pub food: Vec<Food>,
     pub update_interval: Duration,
     pub game_over: bool,
+    pub points: u32, 
 }
 impl Controller {
     pub fn new(snake: Snake, update_interval: Duration) -> Controller {
@@ -22,26 +23,27 @@ impl Controller {
             frame_counter: 0,
             food: vec![],
             update_interval,
-            game_over: false,  
+            game_over: false, 
+            points: 0,  
         }
     }
 
     pub fn handle_arrow_keys(&mut self) -> bool {
         let mut some_key_was_pressed = false;
         let mut direction: Direction = Direction::LEFT; // Does not matter which direction is set here, but some must be set, otherwise compiler will complain
-        if is_key_pressed(KeyCode::Up) {
+        if is_key_pressed(KeyCode::Up) && self.snake.direction != Direction::UP {
             some_key_was_pressed = true;
             direction = Direction::UP;        
         }
-        if is_key_pressed(KeyCode::Down) {
+        if is_key_pressed(KeyCode::Down) && self.snake.direction != Direction::DOWN {
             some_key_was_pressed = true;
             direction = Direction::DOWN;
         }
-        if is_key_pressed(KeyCode::Left) {
+        if is_key_pressed(KeyCode::Left) && self.snake.direction != Direction:: LEFT {
             some_key_was_pressed = true;
             direction = Direction::LEFT;
         }
-        if is_key_pressed(KeyCode::Right) {
+        if is_key_pressed(KeyCode::Right) && self.snake.direction != Direction:: RIGHT {
             some_key_was_pressed = true;
             direction = Direction::RIGHT;
         }
@@ -93,6 +95,7 @@ impl Controller {
         self.food.retain( | f | {
             if f.intersected(&self.snake)  {
                 self.snake.eat();
+                self.points += f.get_points(); 
                 return false;
             }
             true
@@ -121,6 +124,19 @@ impl Controller {
             return true;
         }
         false 
+    }
+
+    // Returns true if tail was bitten
+    pub fn test_for_tail_bite(&mut self) -> bool {
+        let snake = &self.snake;
+        let b = &self.snake.history; 
+
+        for item in b {
+            if snake.pos_x == item.0 && snake.pos_y == item.1 {
+                return true; 
+            }
+        }
+        false
     }
     
     fn get_random_coordinates() -> (f32, f32){

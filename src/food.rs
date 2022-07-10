@@ -6,7 +6,7 @@ use crate::{SCALE, snake::Snake, FOOD_COLOR, BORDER_THICKNESS, BORDER_COLOR};
 pub struct Food {
     pos_x: f32,
     pos_y: f32,
-    points: u8,
+    points: u32,
 }
 
 impl Food {
@@ -24,6 +24,10 @@ impl Food {
             return true; 
         }
         false 
+    }
+
+    pub fn get_points(&self) -> u32 {
+        return self.points;
     }
 
     pub fn render(&self) {

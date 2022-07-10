@@ -8,6 +8,7 @@ mod snake;
 mod direction;
 mod food;
 
+use macroquad::prelude::{screen_height, screen_width};
 use snake::Snake;
 use controller::Controller;
 
@@ -41,6 +42,9 @@ async fn main() {
 
         if !controller.game_over {
             game(&mut controller); 
+            draw_text(format!("SCORE: {}", controller.points).as_str(), 10.0, 44.0, 22.0, DARKGRAY);
+        } else {
+            game_over(&mut controller);
         }
         
         // Render debug information 
@@ -67,12 +71,11 @@ fn game(controller: &mut Controller) {
         controller.test_for_intersection();
 
         // Test for wall collision 
-        if controller.test_for_wall_collision() {
+        if controller.test_for_wall_collision() || controller.test_for_tail_bite(){
             println!("--------- GAME OVER ---------"); 
             controller.game_over = true; 
         }
         
-        // TODO: Test for tail bite 
     }
     
     // Render food 
@@ -84,7 +87,7 @@ fn game(controller: &mut Controller) {
     controller.snake.render(); 
 }
 
-fn game_over() {
-
+fn game_over(controller: &mut Controller) {
+    draw_text(format!("GAME OVER. Score was: {}", controller.points).as_str(), 150.0, screen_height() / 2.0, 30.0, color_u8!(0, 0, 0, 255));
 }
 
