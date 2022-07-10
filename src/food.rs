@@ -1,6 +1,6 @@
 use macroquad::prelude::*;
 
-use crate::{SCALE, snake::Snake};
+use crate::{SCALE, snake::Snake, FOOD_COLOR, BORDER_THICKNESS, BORDER_COLOR};
 
 
 pub struct Food {
@@ -27,7 +27,11 @@ impl Food {
     }
 
     pub fn render(&self) {
-        draw_rectangle(self.pos_x, self.pos_y, screen_width() / SCALE, screen_height() / SCALE, GREEN);
+        let border_w = (screen_width() / SCALE) + (BORDER_THICKNESS / 2.0);
+        let border_h = (screen_width() / SCALE) + (BORDER_THICKNESS / 2.0);
+
+        draw_rectangle(self.pos_x, self.pos_y, screen_width() / SCALE, screen_height() / SCALE, FOOD_COLOR);
+        draw_rectangle_lines(self.pos_x, self.pos_y, border_w, border_h, BORDER_THICKNESS, BORDER_COLOR);
     }
 }
 

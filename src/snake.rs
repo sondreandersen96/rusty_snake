@@ -1,6 +1,6 @@
 use macroquad::prelude::*;
 
-use crate::{direction::Direction, SCALE};
+use crate::{direction::Direction, SCALE, SNAKE_BODY_COLOR, SNAKE_HEAD_COLOR, BORDER_COLOR, BORDER_THICKNESS};
 
 pub struct Snake {
     pub pos_x: f32,
@@ -51,15 +51,18 @@ impl Snake {
 
 
     pub fn render(&self) {
-        draw_rectangle(self.pos_x, self.pos_y, screen_width() / SCALE, screen_height() / SCALE, RED);
+        let border_w = (screen_width() / SCALE) + (BORDER_THICKNESS / 2.0);
+        let border_h = (screen_width() / SCALE) + (BORDER_THICKNESS / 2.0);
+        
+        draw_rectangle(self.pos_x, self.pos_y, screen_width() / SCALE, screen_height() / SCALE, SNAKE_HEAD_COLOR);
+        draw_rectangle_lines(self.pos_x, self.pos_y, border_w, border_h, BORDER_THICKNESS, BORDER_COLOR);
         
         // Draw rest of snake (based on length)
         for h in &self.history {
-            draw_rectangle(h.0, h.1, screen_width() / SCALE, screen_height() / SCALE, BLUE);
-            
-        }
-        
 
+            draw_rectangle(h.0, h.1, screen_width() / SCALE, screen_height() / SCALE, SNAKE_BODY_COLOR);   
+            draw_rectangle_lines(h.0, h.1, border_w, border_w, BORDER_THICKNESS, BORDER_COLOR);
+        }
     }
 }
 

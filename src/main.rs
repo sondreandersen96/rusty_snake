@@ -9,10 +9,14 @@ mod direction;
 mod food;
 
 use snake::Snake;
-use direction::Direction;
 use controller::Controller;
 
 const SCALE: f32 = 20.0; 
+const SNAKE_BODY_COLOR: macroquad::color::Color = color_u8!(255, 255, 0, 255);
+const SNAKE_HEAD_COLOR: macroquad::color::Color = color_u8!(255, 0, 0, 255);
+const FOOD_COLOR: macroquad::color::Color = color_u8!(0, 255, 0, 255);
+const BORDER_COLOR: macroquad::color::Color = color_u8!(20, 20, 20, 255);
+const BORDER_THICKNESS: f32 = 4.0; // Should be an even number, since it is often divided by two and used for pixels 
 
 // Window setup
 fn window_conf() -> Conf {
@@ -35,9 +39,6 @@ async fn main() {
     loop {
         clear_background(GRAY);
 
-        // Debug information 
-        draw_text(format!("FRAME: {}, DIRECTION: {}, FPS: {}", controller.frame_counter, controller.snake.direction.as_str(), get_fps()).as_str(), 10.0, 20.0, 22.0, DARKGRAY);
-    
         // Move snake every x seconds or on userinput 
         duration = Instant::now() - controller.prev_update_time;
         if controller.handle_arrow_keys() || duration > update_interval {
@@ -61,6 +62,9 @@ async fn main() {
         // Render snake 
         controller.snake.render(); 
         
+        // Render debug information 
+        draw_text(format!("FRAME: {}, DIRECTION: {}, FPS: {}", controller.frame_counter, controller.snake.direction.as_str(), get_fps()).as_str(), 10.0, 20.0, 22.0, DARKGRAY);
+
         controller.frame_counter += 1;
         next_frame().await
     }
