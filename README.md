@@ -18,6 +18,10 @@ This is my first real project using the Rust language, and has so far been a fun
 
 Create and view documentation for this project (I have not written any as of yet) and all its dependencies with: `cargo doc --open`. 
 
+Run with: `cargo run`.
+
+Run live development server with: `cargo watch -c -x run`.
+
 # Architecture 
 
 I have had the MVC-pattern in mind when coding this game. However I have deviated somewhat, the controller is also storing data, so the controller is kind of both controller and model.
