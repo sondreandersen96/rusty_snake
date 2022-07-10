@@ -1,7 +1,7 @@
 use ::rand::Rng;
 
 use macroquad::prelude::*;
-use std::{time::Instant};
+use std::{time::{Instant, Duration}};
 
 
 use crate::{food::Food, snake::Snake, direction::Direction, SCALE};
@@ -11,14 +11,18 @@ pub struct Controller {
     pub prev_update_time: Instant,
     pub frame_counter: i64,
     pub food: Vec<Food>,
+    pub update_interval: Duration,
+    pub game_over: bool,
 }
 impl Controller {
-    pub fn new(snake: Snake) -> Controller {
+    pub fn new(snake: Snake, update_interval: Duration) -> Controller {
         Controller {
             snake, 
             prev_update_time: Instant::now(),
             frame_counter: 0,
             food: vec![],
+            update_interval,
+            game_over: false,  
         }
     }
 
@@ -93,7 +97,30 @@ impl Controller {
             }
             true
         });
+    }
 
+    // Returns true if wall collision has occured
+    pub fn test_for_wall_collision(&mut self) -> bool {
+        let snake_pos: (f32, f32) = (self.snake.pos_x, self.snake.pos_y);
+        let snake_size = screen_width() / SCALE; 
+
+        if snake_pos.0 < 0.0 {
+            println!("WALL COLLISION LEFT!");
+            return true;
+        }
+        if snake_pos.0 + snake_size > screen_width() {
+            println!("WALL COLLISION RIGHT!");
+            return true;
+        }
+        if snake_pos.1 < 0.0 {
+            println!("WALL COLLISION TOP!");
+            return true;
+        }
+        if snake_pos.1 + snake_size > screen_height() {
+            println!("WALL COLLISION BOTTOM!");
+            return true;
+        }
+        false 
     }
     
     fn get_random_coordinates() -> (f32, f32){
